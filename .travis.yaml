@@ -1,6 +1,11 @@
 sudo: required
 services:
   - docker
+
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   - openssl aes-256-cbc -K $encrypted_793da5f6d338_key -iv $encrypted_793da5f6d338_iv -in service-account.json.enc -out service-account.json -d
   - curl https://sdk.cloud.google.com | bash > /dev/null;
@@ -15,3 +20,9 @@ before_install:
 
 script:
   - docker run worasit501/multi-client-test npm run test -- --coverage
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
