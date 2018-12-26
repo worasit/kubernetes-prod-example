@@ -1,0 +1,20 @@
+apiVersion: certificates.k8s.io/v1beta1
+kind: Certificate
+metadata:
+  name: nongped-com-tls
+spec:
+  secretName: nongped.com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: nongped.com
+  dnsNames:
+    - nongped.com
+    - www.nongped.com
+  aceme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - nongped.com
+          - www.nongped.com
